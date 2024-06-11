@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "activations.h"
-#include "layers.h"
 #include "neuralNetwork.h"
 
 void train(NeuralNetwork &nn, std::vector<std::vector<double>> inputs, std::vector<std::vector<double>> outputs,
@@ -48,13 +47,13 @@ void train(NeuralNetwork &nn, std::vector<std::vector<double>> inputs, std::vect
 }
 
 int main() {
-    NeuralNetwork nn(BINARY_CROSS_ENTROPY);
-    nn.addLayer(new Dense(2, 3, SIGMOID)).addLayer(new Softmax(3, 2));
+    NeuralNetwork nn(MSE);
+    nn.addLayer(new Dense(2, 5, SIGMOID)).addLayer(new Dense(5, 1, SIGMOID));
 
     std::vector<std::vector<double>> inputs = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
-    std::vector<std::vector<double>> outputs = {{1, 0}, {0, 1}, {0, 1}, {1, 0}};
+    std::vector<std::vector<double>> outputs = {{0}, {1}, {1}, {0}};
 
-    train(nn, inputs, outputs, 100000, 0.001, true);
+    train(nn, inputs, outputs, 10000, 0.2, true);
 
     for (int i = 0; i < inputs.size(); i++) {
         std::vector<double> prediction = nn.forward(inputs[i]);
